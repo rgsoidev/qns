@@ -4,7 +4,6 @@ import Admin from "./pages/Admin"
 import Login from "./pages/LogIn"
 import Register from "./pages/SuperAdminDashBoard"
 import ProtectedRoute from "./pages/ProtectedRoutes"
-import SuperAdmProtectedRoutes from "./pages/SuperAdmProtectedRoutes"
 function App() {
 
 
