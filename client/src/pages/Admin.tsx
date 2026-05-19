@@ -65,7 +65,7 @@ export default function Admin() {
     const utter = new SpeechSynthesisUtterance(
       `Now serving ${number}. ${name}`
     );
-    
+
     utter.rate = 1;
     utter.pitch = 1;
     utter.lang = "en-US";
@@ -237,7 +237,11 @@ export default function Admin() {
 
       {/* RIGHT */}
       <div className="p-6 border border-[#dddd] rounded-2xl">
-
+        <div>
+          <a href={import.meta.env.VITE_VIEWING_URL} target="_blank" rel="noopener noreferrer">
+            Open Viewing Page
+          </a>
+        </div>
         {/* NOW SERVING */}
         <div className="bg-green-600 text-white p-4 rounded mb-6">
           <h2 className="text-sm">NOW SERVING</h2>

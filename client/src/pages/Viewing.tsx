@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
 import { db } from "../firebase";
-import Player from "../layouts/Player";
+// import Player from "../layouts/Player";
 
 export default function Viewer() {
   const [current, setCurrent] = useState<any>(null);
   const [time, setTime] = useState('')
-  
-   const user = JSON.parse(
+
+  const user = JSON.parse(
     localStorage.getItem("user") || "{}"
   );
   useEffect(() => {
-     const q = query(
+    const q = query(
       collection(db, "queue"),
       where("companyId", "==", user.companyId),
       orderBy("order", "asc")
@@ -63,13 +63,10 @@ export default function Viewer() {
 
         <div className="flex flex-col w-1/2 h-full">
 
-          {/* 🎬 Video (Top) */}
-          <div className="h-full bg-black">
+          {/* <div className="h-full bg-black">
             <Player />
-          </div>
-
-          {/* ⏰ Time (Bottom) */}
-          <div className="absolute bottom-0 left-0 right-0 text-white bg-yellow-300 text-center">
+          </div> */}
+          <div className="absolute bottom-0 left-0 right-0 text-white bg-black text-center">
             <div className="flex justify-center items-center gap-4">
               <div className="h-20 w-20 ">
                 <img className="w-full h-full" src="/rgsoi.png" alt="" />
