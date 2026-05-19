@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass,setShowPass] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const login = async (
@@ -70,7 +71,12 @@ export default function Login() {
 
     setLoading(false);
   };
+//    const [isChecked, setIsChecked] = useState(false);
+// console.log(isChecked)
 
+  const handleOnChange = () => {
+    setShowPass(!showPass);
+  };
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
@@ -116,7 +122,7 @@ export default function Login() {
             </label>
 
             <input
-              type="password"
+              type={showPass ? 'text' : 'password'}
               placeholder="Enter password"
               value={password}
               onChange={(e) =>
@@ -125,7 +131,11 @@ export default function Login() {
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
+             <input
+          type="checkbox"
+          checked={showPass}
+          onChange={handleOnChange}
+        />
           {/* Button */}
           <button
             type="submit"

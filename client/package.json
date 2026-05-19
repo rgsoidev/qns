@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {
+  "dependencies": { 
     "@tailwindcss/vite": "^4.2.2",
     "@vidstack/react": "^1.12.13",
     "firebase": "^12.12.0",
