@@ -22,10 +22,6 @@ function App() {
         }
       ]
     },
-    // {
-    //   path: '/',
-    //   element: <Register />
-    // }
     {
       element: <SuperAdmProtectedRoutes />,
       children: [

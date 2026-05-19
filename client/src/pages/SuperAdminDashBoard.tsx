@@ -15,8 +15,8 @@ export default function SuperAdminDashBoard() {
   const [companyName, setCompanyName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(true)
 
-  // ================= USERS =================
   const [users, setUsers] = useState<any[]>([]);
 
   const fetchUsers = async () => {
@@ -38,7 +38,7 @@ export default function SuperAdminDashBoard() {
     fetchUsers();
   }, []);
 
-  // ================= REGISTER =================
+  // REGISTER FUNCTION
   const registerCompany = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -100,6 +100,10 @@ export default function SuperAdminDashBoard() {
       alert("Failed to delete");
     }
   };
+
+  const handleOnChange = () => {
+    setShowPass(!showPass)
+  }
   return (
     <div className="min-h-screen bg-gray-100 p-4">
 
@@ -181,7 +185,7 @@ export default function SuperAdminDashBoard() {
               </label>
 
               <input
-                type="password"
+                type={showPass ? 'text' : 'password'}
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) =>
@@ -190,7 +194,15 @@ export default function SuperAdminDashBoard() {
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
+            <div className="flex items-center gap-2">
+              <input
+                id="showpass"
+                type="checkbox"
+                checked={showPass}
+                onChange={handleOnChange}
+              />
+              <label htmlFor="showpass">Show Password</label>
+            </div>
             {/* Submit */}
             <button
               type="submit"

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPass,setShowPass] = useState(true);
+  const [showPass, setShowPass] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const login = async (
@@ -41,7 +41,7 @@ export default function Login() {
         return;
       }
 
-      const user:any = {
+      const user: any = {
         id: snap.docs[0].id,
         ...snap.docs[0].data(),
       };
@@ -55,9 +55,9 @@ export default function Login() {
       alert("Login success!");
 
       console.log("Logged user:", user);
-      if((user && user?.role ) === 'super admin'){
+      if ((user && user?.role) === 'super admin') {
         navigate('/')
-      }else if((user && user?.role ) === 'admin'){
+      } else if ((user && user?.role) === 'admin') {
         navigate('/admin')
       }
 
@@ -71,8 +71,8 @@ export default function Login() {
 
     setLoading(false);
   };
-//    const [isChecked, setIsChecked] = useState(false);
-// console.log(isChecked)
+  //    const [isChecked, setIsChecked] = useState(false);
+  // console.log(isChecked)
 
   const handleOnChange = () => {
     setShowPass(!showPass);
@@ -131,11 +131,15 @@ export default function Login() {
               className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-             <input
-          type="checkbox"
-          checked={showPass}
-          onChange={handleOnChange}
-        />
+          <div className="flex items-center gap-2">
+            <input
+            id="showpass"
+              type="checkbox"
+              checked={showPass}
+              onChange={handleOnChange}
+            />
+            <label className="cursor-pointer" htmlFor="showpass">Show Password</label>
+          </div>
           {/* Button */}
           <button
             type="submit"
@@ -148,7 +152,7 @@ export default function Login() {
 
         {/* Footer */}
         <p className="text-center text-gray-400 text-sm mt-6">
-          QueueIt System
+          Queue System
         </p>
       </div>
     </div>

@@ -23,7 +23,7 @@ export default function Admin() {
   // 🔐 GET USER FROM LOCALSTORAGE
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // ================= ADD QUEUE =================
+  // ADDING QUEUE
   const addQueue = async () => {
     if (!name || !number) return;
 
@@ -37,7 +37,6 @@ export default function Admin() {
       number,
       order: Date.now(),
 
-      // 🔥 IMPORTANT MULTI-COMPANY FIELD
       companyId: user.companyId,
       companyName: user.companyName,
     });
@@ -46,7 +45,7 @@ export default function Admin() {
     setNumber("");
   };
 
-  // ================= SPEECH =================
+  // TEXT TO SPEECH 
   const playSound = () => {
     return new Promise<void>((resolve) => {
       const audio = new Audio("/announcer1.mp3");
@@ -120,7 +119,7 @@ export default function Admin() {
     speak(next.number, next.name);
   };
 
-  // ================= NOTIFY =================
+  //NOTIFY BUTTON
   const notify = async () => {
     const q = query(
       collection(db, "queue"),
@@ -139,7 +138,7 @@ export default function Admin() {
     speak(current.number, current.name);
   };
 
-  // ================= REALTIME =================
+
   const [queues, setQueues] = useState<any[]>([]);
   const [current, setCurrent] = useState<any>(null);
 
@@ -170,7 +169,7 @@ export default function Admin() {
   };
   return (
     <div className="grid grid-cols-2 p-4 gap-4">
-      {/* LEFT */}
+      {/* LEFT SIDE */}
       <div className="p-6 border border-[#dddd] rounded-2xl">
 
         <div className="flex justify-between items-center gap-4">
