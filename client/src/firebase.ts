@@ -11,6 +11,11 @@ const firebaseConfig = {
   appId: "1:416423011753:web:3f7520ce2e557ecdd2d0b8",
   measurementId: "G-169JKHX0W6"
 };
+
+
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAueQu8BfKUhQ5ki6aSsu1E1e5OXDIG5EM",
 //   authDomain: "qnms-a7373.firebaseapp.com",
@@ -20,7 +25,3 @@ const firebaseConfig = {
 //   appId: "1:940738706314:web:7a525d5a643035ed866673",
 //   measurementId: "G-QF3YRP38QC"
 // };
-
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);

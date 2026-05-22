@@ -1,89 +1,204 @@
 import { useEffect, useState } from "react";
-import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  where,
+} from "firebase/firestore";
+
 import { db } from "../firebase";
-// import Player from "../layouts/Player";
+
+type QueueItem = {
+  number: string;
+  name: string;
+  companyId: string;
+  queueType: "loading" | "dispatching";
+};
 
 export default function Viewer() {
-  const [current, setCurrent] = useState<any>(null);
-  const [time, setTime] = useState('')
+  const [loadingCurrent, setLoadingCurrent] =
+    useState<QueueItem | null>(null);
+
+  const [dispatchCurrent, setDispatchCurrent] =
+    useState<QueueItem | null>(null);
+
+  const [time, setTime] = useState("");
 
   const user = JSON.parse(
     localStorage.getItem("user") || "{}"
   );
+
+  // ================= LOADING =================
   useEffect(() => {
+    if (!user?.companyId) return;
+
     const q = query(
       collection(db, "queue"),
-      where("companyId", "==", user.companyId),
+      where(
+        "companyId",
+        "==",
+        user.companyId
+      ),
+      where(
+        "queueType",
+        "==",
+        "loading"
+      ),
       orderBy("order", "asc")
     );
+
     const unsub = onSnapshot(q, (snap) => {
       if (snap.empty) {
-        setCurrent(null);
+        setLoadingCurrent(null);
         return;
       }
 
-      setCurrent(snap.docs[0].data());
+      setLoadingCurrent(
+        snap.docs[0].data() as QueueItem
+      );
     });
 
     return () => unsub();
-  }, []);
+  }, [user.companyId]);
 
+  // ================= DISPATCH =================
+  useEffect(() => {
+    if (!user?.companyId) return;
+
+    const q = query(
+      collection(db, "queue"),
+      where(
+        "companyId",
+        "==",
+        user.companyId
+      ),
+      where(
+        "queueType",
+        "==",
+        "dispatching"
+      ),
+      orderBy("order", "asc")
+    );
+
+    const unsub = onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        setDispatchCurrent(null);
+        return;
+      }
+
+      setDispatchCurrent(
+        snap.docs[0].data() as QueueItem
+      );
+    });
+
+    return () => unsub();
+  }, [user.companyId]);
+
+  // ================= CLOCK =================
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
 
-      const formatted = now.toLocaleTimeString("en-PH", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-
-      setTime(formatted);
+      setTime(
+        now.toLocaleTimeString("en-PH", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
+
   return (
-    <>
-      <div className="flex h-screen ">
+    <div className="min-h-screen bg-white flex flex-col">
 
-        {/* LEFT SIDE - QUEUE */}
-        <div className="flex flex-col font-bold items-center justify-center w-1/2">
-          <h1 className="text-5xl mb-4">NOW SERVING</h1>
+      {/* MAIN */}
+      <div className="flex flex-1 flex-col lg:flex-row pb-24">
 
-          <h2 className="text-7xl text-green-600 font-bold">
-            {current ? current.number : "--"}
-          </h2>
+        {/* LOADING */}
+        <div className="w-full lg:w-1/2 border-b lg:border-b-0 lg:border-r flex flex-col">
 
-          <p className="text-5xl mt-4">
-            {current ? current.name : "Waiting..."}
-          </p>
+          <div className="text-center text-blue-600 font-bold text-3xl md:text-5xl py-8">
+            LOADING
+          </div>
+
+          <div className="flex-1 flex flex-col justify-center items-center text-center px-4">
+
+            <h1 className="font-bold text-4xl md:text-5xl mb-6">
+              Now Serving
+            </h1>
+
+            <h2 className="font-bold text-green-600 text-6xl md:text-8xl">
+              {loadingCurrent?.number ||
+                "--"}
+            </h2>
+
+            <p className="mt-6 text-3xl md:text-5xl">
+              {loadingCurrent?.name ||
+                "Waiting..."}
+            </p>
+
+          </div>
         </div>
 
+        {/* DISPATCH */}
+        <div className="w-full lg:w-1/2 flex flex-col">
 
-        <div className="flex flex-col w-1/2 h-full">
+          <div className="text-center text-orange-500 font-bold text-3xl md:text-5xl py-8">
+            DISPATCHING
+          </div>
 
-          {/* <div className="h-full bg-black">
-            <Player />
-          </div> */}
-          <div className="absolute bottom-0 left-0 right-0 text-white bg-black text-center">
-            <div className="flex justify-center items-center gap-4">
-              <div className="h-20 w-20 ">
-                <img className="w-full h-full" src="/rgsoi.png" alt="" />
-              </div>
-              <div className="text-4xl font-bold w-full text-left">{time}</div>
+          <div className="flex-1 flex flex-col justify-center items-center text-center px-4">
+
+            <h1 className="font-bold text-4xl md:text-5xl mb-6">
+              Now Serving
+            </h1>
+
+            <h2 className="font-bold text-green-600 text-6xl md:text-8xl">
+              {dispatchCurrent?.number ||
+                "--"}
+            </h2>
+
+            <p className="mt-6 text-3xl md:text-5xl">
+              {dispatchCurrent?.name ||
+                "Waiting..."}
+            </p>
+
+          </div>
+        </div>
+      </div>
+
+      {/* FOOTER */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black text-white h-24 px-6">
+
+        <div className="h-full flex items-center justify-between">
+
+          <div className="flex items-center gap-4">
+
+            <img
+              src="/rgsoi.png"
+              className="h-14 w-14 object-contain"
+            />
+
+            <div className="text-lg md:text-2xl font-semibold">
+              {user.companyName}
             </div>
+
+          </div>
+
+          <div className="text-2xl md:text-4xl font-bold">
+            {time}
           </div>
 
         </div>
-
       </div>
 
-    </>
+    </div>
   );
 }
-
-
 
 // ================= HOW TO RUN =================
 // 1. npm install firebase react-router-dom
